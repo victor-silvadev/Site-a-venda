@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guimarães Mobile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --gold: #C5A059;
+            --gold-light: #E2C286;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #ffffff;
+            color: #1a1a1a;
+            overflow-x: hidden;
+        }
+
+        .text-gold {
+            color: var(--gold);
+        }
+
+        .bg-gold {
+            background: linear-gradient(135deg, #C5A059 0%, #E2C286 100%);
+        }
+
+        .border-gold {
+            border-color: var(--gold);
+        }
+
+        .glass-nav {
+            background: rgba(243, 228, 212, 0.92);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(197, 160, 89, 0.35);
+        }
+
+        .gold-gradient-text {
+            background: linear-gradient(to right, #8A6E2F, #C5A059, #F9F295, #C5A059, #8A6E2F);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: shine 3s linear infinite;
+        }
+
+        @keyframes shine {
+            to {
+                background-position: 200% center;
+            }
+        }
+
+        .hero-image-container::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: -20px;
+            bottom: -20px;
+            border: 2px solid var(--gold);
+            z-index: -1;
+            transition: 0.5s;
+        }
+
+        .hero-image-container img {
+            transition: filter 0.7s ease;
+            filter: grayscale(1);
+        }
+
+        .hero-image-container:hover img {
+            filter: grayscale(0);
+        }
+
+        @media (max-width: 767px) {
+            .hero-image-container img {
+                filter: grayscale(0) !important;
+            }
+
+            .hero-image-container:hover img {
+                filter: grayscale(0) !important;
+            }
+        }
+
+        .service-card {
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        @media (hover: hover) {
+            .service-card:hover {
+                transform: translateY(-10px) scale(1.02);
+                border-color: var(--gold);
+                box-shadow: 0 24px 50px rgba(0, 0, 0, 0.08);
+            }
+        }
+
+        .service-card.active {
+            transform: translateY(-10px) scale(1.02);
+            border-color: var(--gold);
+            box-shadow: 0 24px 50px rgba(0, 0, 0, 0.08);
+        }
+
+        .service-action {
+            display: block;
+            margin-top: 1.75rem;
+            opacity: 0;
+            transform: translateY(12px);
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .service-card.active .service-action {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        @media (hover: hover) {
+            .service-card:hover .service-action {
+                opacity: 1;
+                transform: translateY(0);
+                pointer-events: auto;
+            }
+        }
+
+        .service-action {
+            background: #111111;
+            color: #ffffff;
+            padding: 1rem 1.5rem;
+            border-radius: 9999px;
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .service-action:hover {
+            background: #c5a059;
+            color: #111111;
+        }
+
+        .service-card[tabindex] {
+            cursor: pointer;
+        }
+
+        .service-card:focus-visible {
+            outline: 2px solid var(--gold);
+            outline-offset: 4px;
+        }
+
+        .consultant-button {
+            transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .consultant-button:hover {
+            background: linear-gradient(135deg, #C5A059 0%, #E2C286 100%);
+            color: #1a1a1a;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(197, 160, 89, 0.3);
+        }
+
+        @media (max-width: 767px) {
+            .consultant-button {
+                padding: 0.85rem 1.5rem;
+            }
+        }
+
+        .portfolio-card {
+            position: relative;
+            overflow: hidden;
+            background-color: #0d0d0d;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            aspect-ratio: 9 / 16;
+            width: 100%;
+        }
+
+        .portfolio-media {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 1;
+        }
+
+        /* Máscara de gradiente escuro para realçar os textos e ícones do Instagram */
+        .portfolio-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.05) 50%, rgba(0, 0, 0, 0.45) 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .portfolio-overlay {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            pointer-events: none;
+            z-index: 10;
+            opacity: 0;
+            transition: opacity 0.4s ease, filter 0.4s ease;
+            filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.95)) brightness(1.25) contrast(1.15);
+        }
+
+        @media (hover: hover) {
+            .portfolio-card:hover .portfolio-overlay,
+            .portfolio-card:hover::after {
+                opacity: 1;
+            }
+        }
+
+        .portfolio-card.active .portfolio-overlay,
+        .portfolio-card.active::after {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="fixed w-full z-50 glass-nav py-4 px-6 md:px-12 flex justify-between items-center">
+        <div class="flex items-center gap-2">
+            <img src="./imagens/1784324945600-removebg-preview.png" alt="Guimarães Mobile Logo" class="h-14">
+        </div>
+        <div class="hidden md:flex items-center gap-8 text-xs font-bold uppercase tracking-tighter">
+            <a href="#inicio" class="hover:text-gold transition">Início</a>
+            <a href="#servicos" class="hover:text-gold transition">Serviços</a>
+            <a href="#portfolio" class="hover:text-gold transition">Portfólio</a>
+            <a href="https://wa.me/5521978862572"
+                class="inline-flex h-9 items-center bg-black text-white px-6 rounded-full hover:bg-gold transition">Orçamento</a>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section id="inicio"
+        class="min-h-screen flex flex-col md:flex-row items-center justify-center px-6 md:px-20 pt-24 gap-12">
+        <div class="md:w-1/2" data-aos="fade-right" data-aos-duration="1000">
+            <h2 class="text-gold font-light tracking-[0.3em] mb-4 uppercase">Exclusividade & Estratégia</h2>
+            <h1 class="text-5xl md:text-7xl font-bold leading-tight mb-6">
+                Elevando sua marca ao patamar <span class="gold-gradient-text">Premium</span>.
+            </h1>
+            <p class="text-gray-600 text-lg mb-8 max-w-lg font-light leading-relaxed">
+                Gestão estratégica de redes sociais e produção de conteúdo de alto valor para profissionais que não
+                aceitam o comum.
+            </p>
+            <div class="flex gap-4">
+                <a href="https://wa.me/5521978862572"
+                    class="bg-gold text-white px-8 py-4 rounded-sm font-bold uppercase text-sm tracking-widest hover:shadow-xl hover:shadow-gold/20 transition-all">
+                    Começar agora
+                </a>
+            </div>
+        </div>
+
+        <div class="md:w-1/2 max-w-md mx-auto relative hero-image-container" data-aos="zoom-in"
+            data-aos-duration="1200">
+            <img src="./imagens/IMG_0514.PNG" alt="Guimarães Mobile Founder"
+                class="w-full grayscale hover:grayscale-0 transition-all duration-700 shadow-2xl">
+        </div>
+    </section>
+
+    <!-- SERVIÇOS (Corrigido e Resumido) -->
+    <section id="servicos" class="py-24 bg-[#f6e2d0] px-6">
+        <div class="text-center mb-16" data-aos="fade-up">
+            <h3 class="text-gold tracking-widest uppercase text-sm mb-2">Gestão de Rede Social</h3>
+            <h2 class="text-4xl font-bold">Tudo que você precisa saber sobre os nossos serviços</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            <!-- Card 1 -->
+            <div class="service-card bg-white p-10 border border-gray-100 transition-all duration-300"
+                data-aos="fade-up" data-aos-delay="100" tabindex="0" data-service="Social Media & Gestão"
+                data-msg="Olá, gostaria de saber mais sobre os serviços de Social Media e Gestão.">
+                <div class="text-gold mb-6 text-3xl">✦</div>
+                <h4 class="text-xl font-bold mb-4 uppercase tracking-tighter">Social Media & Gestão</h4>
+                <p class="text-gray-700 font-normal text-sm leading-relaxed">
+                    Gerenciamento estratégico, engajamento real e análise de métricas para crescimento constante.
+                </p>
+                <a href="https://wa.me/5521978862572?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20os%20servi%C3%A7os%20de%20Social%20Media%20e%20Gest%C3%A3o."
+                    class="service-action" target="_blank" rel="noopener">Saiba mais</a>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="service-card bg-white p-10 border border-gray-100 transition-all duration-300"
+                data-aos="fade-up" data-aos-delay="200" tabindex="0" data-service="Produção de Conteúdo"
+                data-msg="Olá, gostaria de saber mais sobre os serviços de Produção de Conteúdo.">
+                <div class="text-gold mb-6 text-3xl">✦</div>
+                <h4 class="text-xl font-bold mb-4 uppercase tracking-tighter">Produção de Conteúdo</h4>
+                <p class="text-gray-700 font-normal text-sm leading-relaxed">
+                    Fotografia, videografia e Storymaker Mobile para registrar momentos com olhar cinematográfico.
+                </p>
+                <a href="https://wa.me/5521978862572?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20os%20servi%C3%A7os%20de%20Produ%C3%A7%C3%A3o%20de%20Conte%C3%BAdo."
+                    class="service-action" target="_blank" rel="noopener">Saiba mais</a>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="service-card bg-white p-10 border border-gray-100 transition-all duration-300"
+                data-aos="fade-up" data-aos-delay="300" tabindex="0" data-service="Branding & Design"
+                data-msg="Olá, gostaria de saber mais sobre os serviços de Branding e Design.">
+                <div class="text-gold mb-6 text-3xl">✦</div>
+                <h4 class="text-xl font-bold mb-4 uppercase tracking-tighter">Branding & Design</h4>
+                <p class="text-gray-700 font-normal text-sm leading-relaxed">
+                    Criação de logotipos, artes exclusivas e identidade visual que transmitem autoridade.
+                </p>
+                <a href="https://wa.me/5521978862572?text=Ol%C3%A1%2C%20gostaria%20de%20saber%20mais%20sobre%20os%20servi%C3%A7os%20de%20Branding%20e%20Design."
+                    class="service-action" target="_blank" rel="noopener">Saiba mais</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- PORTFÓLIO / FEED -->
+    <section id="portfolio" class="py-24 px-6 md:px-20">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-12">
+            <div data-aos="fade-right">
+                <h2 class="text-4xl font-bold">Nosso Portfólio</h2>
+                <p class="text-gray-400 mt-2">Registrando momentos, construindo legados.</p>
+            </div>
+            <a href="https://instagram.com/guimaraesmobile" target="_blank"
+                class="text-gold font-bold border-b border-gold pb-1 hover:pr-4 transition-all">Ver Instagram ↗</a>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <!-- Galeria de Portfólio com Overlay do Instagram -->
+            <div class="portfolio-card" data-aos="zoom-in" tabindex="0">
+                <img src="./imagens/IMG_0621.PNG" alt="Portfólio - Foto 1" class="portfolio-media">
+                <img src="./imagens/IMG_0627-removebg-preview.png" alt="Instagram Frame" class="portfolio-overlay">
+            </div>
+            <div class="portfolio-card" data-aos="zoom-in" data-aos-delay="100" tabindex="0">
+                <video src="./imagens/video1.mp4" loop muted playsinline class="portfolio-media"></video>
+                <img src="./imagens/IMG_0627-removebg-preview.png" alt="Instagram Frame" class="portfolio-overlay">
+            </div>
+            <div class="portfolio-card" data-aos="zoom-in" data-aos-delay="200" tabindex="0">
+                <img src="./imagens/IMG_0616.PNG" alt="Portfólio - Foto 3" class="portfolio-media">
+                <img src="./imagens/IMG_0627-removebg-preview.png" alt="Instagram Frame" class="portfolio-overlay">
+            </div>
+            <div class="portfolio-card" data-aos="zoom-in" data-aos-delay="300" tabindex="0">
+                <video src="./imagens/video2.mp4" loop muted playsinline class="portfolio-media"></video>
+                <img src="./imagens/IMG_0627-removebg-preview.png" alt="Instagram Frame" class="portfolio-overlay">
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER / CTA FINAL -->
+    <footer class="bg-black text-white py-20 px-6 text-center overflow-hidden relative">
+        <div class="absolute inset-0 opacity-10 flex items-center justify-center pointer-events-none">
+            <span
+                class="text-[14vw] md:text-[16vw] leading-none whitespace-nowrap font-bold select-none">GUIMARAES</span>
+        </div>
+
+        <div class="relative z-10" data-aos="fade-up">
+            <h2 class="text-3xl md:text-5xl font-bold mb-8">Pronto para transformar sua presença digital?</h2>
+            <p class="text-gray-400 mb-12 max-w-2xl mx-auto">Solicite um diagnóstico do seu perfil e descubra como
+                podemos aplicar sofisticação ao seu negócio.</p>
+
+            <a href="https://wa.me/5521978862572"
+                class="consultant-button inline-block bg-white text-black px-12 py-5 font-bold uppercase tracking-widest">
+                Falar com a Consultora
+            </a>
+
+            <div
+                class="mt-20 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-gray-500">
+                <p>© 2026 Guimarães Mobile. Todos os direitos reservados.</p>
+                <div class="flex gap-8">
+                    <a href="#" class="hover:text-gold">INSTAGRAM</a>
+                    <a href="#" class="hover:text-gold">WHATSAPP</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            once: true,
+            duration: 800
+        });
+
+        document.querySelector('nav').addEventListener('click', event => {
+            const link = event.target.closest('a[href^="#"]');
+
+            if (!link) return;
+
+            const target = document.querySelector(link.getAttribute('href'));
+
+            if (!target) return;
+
+            event.preventDefault();
+
+            const navHeight = document.querySelector('nav').offsetHeight;
+            const startPosition = window.scrollY;
+            const targetPosition = target.getBoundingClientRect().top + startPosition - navHeight;
+            const distance = targetPosition - startPosition;
+            const duration = 700;
+            const startTime = performance.now();
+
+            const animateScroll = currentTime => {
+                const progress = Math.min((currentTime - startTime) / duration, 1);
+                const easedProgress = progress < 0.5
+                    ? 2 * progress * progress
+                    : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+
+                window.scrollTo(0, startPosition + distance * easedProgress);
+
+                if (progress < 1) requestAnimationFrame(animateScroll);
+            };
+
+            requestAnimationFrame(animateScroll);
+            history.pushState(null, '', link.getAttribute('href'));
+        });
+
+        const serviceCards = document.querySelectorAll('.service-card');
+        serviceCards.forEach(card => {
+            const toggleActive = () => {
+                const isActive = card.classList.toggle('active');
+                if (isActive) {
+                    serviceCards.forEach(other => {
+                        if (other !== card) other.classList.remove('active');
+                    });
+                }
+            };
+
+            card.addEventListener('click', event => {
+                if (event.target.closest('.service-action')) return;
+                toggleActive();
+            });
+
+            card.addEventListener('keydown', event => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    toggleActive();
+                }
+            });
+        });
+
+        const portfolioCards = document.querySelectorAll('.portfolio-card');
+        portfolioCards.forEach(card => {
+            const video = card.querySelector('video');
+
+            const playVideo = () => {
+                if (video) {
+                    video.play().catch(() => {});
+                }
+            };
+
+            const pauseVideo = () => {
+                if (video) {
+                    video.pause();
+                }
+            };
+
+            const toggleActive = () => {
+                const isActive = card.classList.toggle('active');
+                if (isActive) {
+                    playVideo();
+                    portfolioCards.forEach(other => {
+                        if (other !== card) {
+                            other.classList.remove('active');
+                            const otherVideo = other.querySelector('video');
+                            if (otherVideo) otherVideo.pause();
+                        }
+                    });
+                } else {
+                    pauseVideo();
+                }
+            };
+
+            card.addEventListener('mouseenter', () => {
+                playVideo();
+            });
+
+            card.addEventListener('mouseleave', () => {
+                if (!card.classList.contains('active')) {
+                    pauseVideo();
+                }
+            });
+
+            card.addEventListener('click', () => {
+                toggleActive();
+            });
+
+            card.addEventListener('keydown', event => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    toggleActive();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
