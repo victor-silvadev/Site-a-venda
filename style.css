@@ -221,6 +221,93 @@
             opacity: 1;
         }
 
+        .faq-section {
+            background-color: #f6e2d0;
+        }
+
+        .faq-list {
+            border-top: 1px solid rgba(197, 160, 89, 0.45);
+        }
+
+        .faq-item {
+            border-bottom: 1px solid rgba(197, 160, 89, 0.45);
+        }
+
+        .faq-question {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+            padding: 1.5rem 0;
+            color: #1a1a1a;
+            font-size: 1rem;
+            font-weight: 700;
+            text-align: left;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .faq-question:hover,
+        .faq-question[aria-expanded="true"] {
+            color: var(--gold);
+        }
+
+        .faq-question:focus-visible {
+            outline: 2px solid var(--gold);
+            outline-offset: 5px;
+        }
+
+        .faq-icon {
+            flex: 0 0 auto;
+            width: 1.35rem;
+            height: 1.35rem;
+            fill: none;
+            stroke: currentColor;
+            stroke-linecap: round;
+            stroke-width: 1.8;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .faq-question[aria-expanded="true"] .faq-icon {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(-0.35rem);
+            transition: max-height 0.4s ease-in-out, opacity 0.35s ease-in-out, transform 0.4s ease-in-out;
+        }
+
+        .faq-answer-inner {
+            padding-right: 3rem;
+            color: #5c5149;
+            font-size: 0.95rem;
+            font-weight: 400;
+            line-height: 1.8;
+            padding-bottom: 0;
+            transition: padding-bottom 0.35s ease-in-out;
+        }
+
+        .faq-answer.is-open {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .faq-answer.is-open .faq-answer-inner {
+            padding-bottom: 1.5rem;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .faq-icon,
+            .faq-answer,
+            .faq-answer-inner {
+                transition: none;
+            }
+        }
+
         /* Animação do Botão Hambúrguer */
         .hamburger-button {
             display: flex;
