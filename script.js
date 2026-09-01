@@ -115,6 +115,34 @@
             });
         });
 
+        // Acordeao da secao de perguntas frequentes
+        const faqQuestions = document.querySelectorAll('.faq-question');
+        faqQuestions.forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = document.getElementById(question.getAttribute('aria-controls'));
+                const isOpen = question.getAttribute('aria-expanded') === 'true';
+
+                question.setAttribute('aria-expanded', String(!isOpen));
+                answer.setAttribute('aria-hidden', String(isOpen));
+
+                if (isOpen) {
+                    // Mantem a altura atual antes de iniciar o fechamento.
+                    answer.style.maxHeight = `${answer.scrollHeight}px`;
+                    requestAnimationFrame(() => {
+                        answer.classList.remove('is-open');
+                        answer.style.maxHeight = '0px';
+                    });
+                } else {
+                    // Primeiro abre o estado visual e, no frame seguinte, anima ate a altura real.
+                    answer.style.maxHeight = '0px';
+                    answer.classList.add('is-open');
+                    requestAnimationFrame(() => {
+                        answer.style.maxHeight = `${answer.scrollHeight}px`;
+                    });
+                }
+            });
+        });
+
         // Toggle do Menu Mobile Animado
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
