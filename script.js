@@ -5,7 +5,7 @@
         });
 
         document.querySelector('nav').addEventListener('click', event => {
-            const link = event.target.closest('a[href^=#]');
+            const link = event.target.closest('a[href^="#"]');
 
             if (!link) return;
 
@@ -20,6 +20,14 @@
             const targetPosition = target.getBoundingClientRect().top + startPosition - navHeight;
             const distance = targetPosition - startPosition;
             const duration = 700;
+
+            // Respeita a preferência do usuário por menos movimento.
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                window.scrollTo(0, targetPosition);
+                history.pushState(null, '', link.getAttribute('href'));
+                return;
+            }
+
             const startTime = performance.now();
 
             const animateScroll = currentTime => {
